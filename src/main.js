@@ -29,7 +29,10 @@ const router = new VueRouter({
 // 创建和挂载根实例
 const app = new Vue({
   router,
-  render: h => h(App)
+  render: h => h(App),
+  data: {
+    eventHub: new Vue()
+  }
 });
 app.$mount('#app');
 

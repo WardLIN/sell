@@ -18,7 +18,7 @@
       </div>
     </div>
     <!-- 内容栏 -->
-    <router-view></router-view>
+    <router-view :seller="seller"></router-view>
   </div>
 </template>
 
