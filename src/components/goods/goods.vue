@@ -3,6 +3,7 @@ Author: Ward Lin
 Email: 13825226424@163.com 
 -->
 <template>
+  <div>
 	<div class="goods">
 		<div class="menu-wrapper" ref="menuWrapper">
 			<ul>
@@ -18,7 +19,7 @@ Email: 13825226424@163.com
 				<li v-for="item in goods" class="food-list foodListHook">
 					<h1 class="title">{{item.name}}</h1>
 					<ul>
-						<li v-for="food in item.foods" class="food-item border-1px">
+						<li v-for="food in item.foods" class="food-item border-1px" @click="selectFood(food,$event)">
 							<div class="icon">
 								<img width="57" height="57" :src="food.icon">
 							</div>
@@ -44,12 +45,15 @@ Email: 13825226424@163.com
 		</div>
 		<shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 	</div>
+  <food :food="selectedFood" class="food" ref="food"></food>
+  </div>
 </template>
 
 <script>
     import BScroll from 'better-scroll';
     import shopcart from 'components/shopcart/shopcart';
     import cartcontrol from 'components/cartcontrol/cartcontrol';
+    import food from 'components/food/food';
 
     const ERR_OK = 0;
     export default {
@@ -62,7 +66,8 @@ Email: 13825226424@163.com
         return {
           goods: [],
           listHeight: [],
-          scrollY: 0
+          scrollY: 0,
+          selectedFood: {}
         };
       },
       computed: {
@@ -112,6 +117,13 @@ Email: 13825226424@163.com
           let ref = foodList[index];
           this.foodsScroll.scrollToElement(ref, 300);
         },
+        selectFood(food, event) {
+          if (!event._constructed) {
+            return;
+          }
+          this.selectedFood = food;
+          this.$refs.food.show();
+        },
         _drop(target) {
            // 体验优化，异步执行下落动画
            this.$nextTick(() => {
@@ -145,7 +157,8 @@ Email: 13825226424@163.com
       },
       components: {
         shopcart,
-        cartcontrol
+        cartcontrol,
+        food
       }
     };
 </script>
