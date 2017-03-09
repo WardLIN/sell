@@ -36,8 +36,8 @@
         defalut() {
           return {
             all: '全部',
-            positive: '滿意',
-            negative: '不滿意'
+            positive: '满意',
+            negative: '不满意'
           };
         }
       }
