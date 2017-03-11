@@ -14,28 +14,24 @@ import './common/stylus/index.styl';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
-// 创建 router 实例，然后传 `routes` 配置
-const routes = [
-  { path: '/goods', component: goods },
-  { path: '/ratings', component: ratings },
-  { path: '/seller', component: seller }
-];
-
 const router = new VueRouter({
-  routes,
-  linkActiveClass: 'active'
-  });
-
+  mode: 'history',
+  base: __dirname,
+  routes: [
+    { path: '/', redirect: '/goods' },
+    { path: '/goods', component: goods },
+    { path: '/ratings', component: ratings },
+    { path: '/seller', component: seller }
+  ]
+});
 // 创建和挂载根实例
 const app = new Vue({
   router,
-  render: h => h(App),
-  data: {
-    eventHub: new Vue()
-  }
+  render: h => h(App)
 });
+
 app.$mount('#app');
 
-// 默认跳转商品界面
-router.push('/goods');
+// // 默认跳转商品界面
+// router.push('/goods');
 

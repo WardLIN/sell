@@ -1,7 +1,3 @@
-<!-- 
-Author: Ward Lin 
-Email: 13825226424@163.com 
--->
 <template>
 	<div class="header">
 		<!-- 头像和内容区 -->
@@ -225,12 +221,11 @@ export default {
       height: 100%
       overflow: auto
       background: rgba(7,17,27,0.97)
-      transition: all 0.5s
+      opacity: 1
       backdrop-filter: blur(10px)
-      &.fade-transition
-        opacity: 1
-        background: rgba(7,17,27,0.97)
-      &.fade-enter,&.fade-leave
+      &.fade-enter.active,&.fade-leave-active
+        transition: all 0.5s
+      &.fade-enter,&.fade-leave-active
         opacity: 0
         background: rgba(7,17,27,0)
       .detail-wrapper

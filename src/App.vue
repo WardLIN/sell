@@ -18,19 +18,28 @@
       </div>
     </div>
     <!-- 内容栏 -->
-    <router-view :seller="seller"></router-view>
+    <keep-alive>
+      <router-view :seller="seller"></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
 import header from './components/header/header.vue';
+import {urlParse} from 'common/js/util';
 
 const ERR_OK = 0;
 
 export default {
   data() {
     return {
-      seller: {}
+      seller: {
+        id: (() => {
+          let queryParam = urlParse();
+          console.log(queryParam);
+          return queryParam.id;
+        })()
+      }
     };
   },
   created() {
@@ -39,8 +48,7 @@ export default {
       response = response.body;
       // console.log(response);
       if (response.errno === ERR_OK) {
-        this.seller = response.data;
-        // console.log(this.seller);
+        this.seller = Object.assign({}, this.seller, response.data);
       }
     });
   },
@@ -66,6 +74,6 @@ export default {
         text-decoration: none
         font-size: 14px
         color: rgb(77,85,93)
-        &.active
+        &.router-link-active
           color: rgb(240,20,20)
 </style>

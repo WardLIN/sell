@@ -17,7 +17,7 @@
             <span class="now">¥{{food.price}}</span><span class="old" v-show="food.oldPrice">¥{{food.oldPrice}}</span>
           </div>
           <div class="cartcontrol-wrapper">
-            <cartcontrol :food="food"></cartcontrol>
+            <cartcontrol @cart-add="_drop" :food="food"></cartcontrol>
           </div>
           <transition name="fade">
             <div class="buy" v-show="!food.count||food.count===0" @click.stop.prevent="addFirst">加入购物车</div>
@@ -31,7 +31,7 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+          <ratingselect @ratingtype-select="ratingTypeChange" @toggle-content="onlyContentChange" :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
           <div class="rating-wrapper">
             <ul v-show="food.ratings && food.ratings.length">
               <li v-for="rating in food.ratings" v-show="needShow(rating.rateType,rating.text)" class="rating-item border-1px">
@@ -83,10 +83,6 @@
         }
       };
     },
-    created() {
-      this.$root.eventHub.$on('ratingtype.select', this._selectType);
-      this.$root.eventHub.$on('toggle.content', this._toggleContent);
-    },
     methods: {
       show() {
         this.showFlag = true;
@@ -105,14 +101,14 @@
       hide() {
         this.showFlag = false;
       },
+      _drop(el) {
+        this.$emit('cart-add', el);
+      },
       addFirst(event) {
-        console.log('click');
         if (!event._constructed) {
           return;
         }
-        console.log(event.target);
         Vue.set(this.food, 'count', 1);
-        this.$root.eventHub.$emit('cartAdd', event.target);
       },
       needShow(type, text) {
         if (this.onlyContent && !text) {
@@ -124,14 +120,14 @@
           return type === this.selectType;
         }
       },
-      _selectType(type) {
+      ratingTypeChange(type) {
         this.selectType = type;
         // 内容改变，对应块的高度改变，需要刷新BScroll的值
         this.$nextTick(() => {
           this.scroll.refresh();
         });
       },
-      _toggleContent(onlyContent) {
+      onlyContentChange(onlyContent) {
         this.onlyContent = onlyContent;
         // 内容改变，对应块的高度改变，需要刷新BScroll的值
         this.$nextTick(() => {

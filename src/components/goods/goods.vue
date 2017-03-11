@@ -1,7 +1,3 @@
-<!-- 
-Author: Ward Lin 
-Email: 13825226424@163.com 
--->
 <template>
   <div>
 	<div class="goods">
@@ -35,7 +31,7 @@ Email: 13825226424@163.com
 									<span class="old" v-show="food.oldPrice">¥{{food.oldPrice}}</span>
 								</div>
 								<div class="cartcontrol-wrapper">
-									<cartcontrol :food="food"></cartcontrol>
+									<cartcontrol @cart-add="_drop" :food="food"></cartcontrol>
 								</div>
 							</div>
 						</li>
@@ -45,7 +41,7 @@ Email: 13825226424@163.com
 		</div>
 		<shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 	</div>
-  <food :food="selectedFood" class="food" ref="food"></food>
+  <food @cart-add="_drop" :food="selectedFood" class="food" ref="food"></food>
   </div>
 </template>
 
@@ -106,7 +102,6 @@ Email: 13825226424@163.com
             });
           }
         });
-        this.$root.eventHub.$on('cartAdd', this._drop);
       },
       methods: {
         selectMenu(index, event) {
@@ -249,7 +244,7 @@ Email: 13825226424@163.com
               line-height: 12px
               margin: 8px 0
             .extra
-              &.first-child
+              &:first-child
                 margin-right: 12px
             .price
               font-weight: 700
@@ -266,4 +261,6 @@ Email: 13825226424@163.com
               position: absolute
               right: 0
               bottom: 12px
+        &:last-child
+          border-none()
 </style>
